@@ -20,7 +20,7 @@ def arg_parser():
     return args
 
 def capture(classifier, id, num):
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(1)
     face_detector = cv2.CascadeClassifier(classifier)
 
     print("Please look at the camera and wait")
@@ -41,6 +41,8 @@ def capture(classifier, id, num):
             # Save the captured image 
             cv2.imwrite("data/User." + str(id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])
             cv2.imshow('image', img)
+
+        print(f"\rCaptured image {count}/{num}", end="")
 
         k = cv2.waitKey(100) & 0xff # Pressing Escape exits the capture session 
         if k == 27:
