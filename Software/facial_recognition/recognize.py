@@ -1,4 +1,4 @@
-# February 5, 2023
+# Dorm Lock
 # Created by Ozayr Raazi
 # Based on code by Marcelo Rovai -> https://github.com/Mjrovai/OpenCV-Face-Recognition
 # Program to recognize a face based on a trained model
