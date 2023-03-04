@@ -1,7 +1,7 @@
 import  { LoginBox } from '../components/LoginBox'
 import { LoginStyle } from '../styles/LoginScreenStyle'
 import { View, Pressable, Text } from 'react-native'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import strings from '../resources/strings'
 
 const res = strings.loginScreen;
@@ -17,10 +17,9 @@ export function LoginScreen():JSX.Element {
         setPassword(password);
          
      }
-     function authenticateUser(){
-        console.log(username);
-        console.log(password);
-    }
+   function authenticateUser(){
+    
+   }
 
     return(
     <>
