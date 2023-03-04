@@ -30,6 +30,20 @@ def recognize(classifier, trainer):
     # to its index in the array. Ex) Ozayr -> ID 0
     names = ["Ozayr"] 
 
+    # Check all available cameras
+    def returnCameraIndexes():
+        index = 5
+        arr = []
+        while index < 6:
+            cap = cv2.VideoCapture(index)
+            print(cap.isOpened())
+            arr.append(index)
+            cap.release()
+            index += 1
+        return arr
+
+    print(returnCameraIndexes())
+
     # Initialize and start realtime video capture
     cam = cv2.VideoCapture(1)
 
