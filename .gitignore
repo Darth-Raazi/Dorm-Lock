@@ -1,3 +1,8 @@
 .DS_Store
 User*.jpg
 trainer.yml
+.ruby-version
+GemFile.lock
+frontend.xcworkspace
+Podfile.lock
+lib/
