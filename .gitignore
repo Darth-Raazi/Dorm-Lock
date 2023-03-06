@@ -5,3 +5,4 @@ trainer.yml
 GemFile.lock
 frontend.xcworkspace
 Podfile.lock
+lib/
