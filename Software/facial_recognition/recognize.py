@@ -16,7 +16,17 @@ def arg_parser():
     
     return args
 
-def recognize(classifier, trainer):
+def get_users():
+    file = "users.txt"
+    users = []
+
+    with open(file, "r") as f:
+        for line in f.readlines():
+            users.append(line.strip())
+
+    return users
+
+def recognize(classifier, trainer, users):
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     recognizer.read(trainer)
     faceCascade = cv2.CascadeClassifier(classifier);
@@ -26,12 +36,8 @@ def recognize(classifier, trainer):
     #iniciate id counter
     id = 0
 
-    # Each name is associated to the ID that corresponds 
-    # to its index in the array. Ex) Ozayr -> ID 0
-    names = ["Ozayr"] 
-
     # Initialize and start realtime video capture
-    cam = cv2.VideoCapture(1)
+    cam = cv2.VideoCapture(2)
 
     # Define min window size to be recognized as a face
     minW = 0.1*cam.get(3)
@@ -55,7 +61,7 @@ def recognize(classifier, trainer):
 
             # Check if confidence is less them 100 ==> "0" is perfect match 
             if (confidence < 100):
-                id = names[id]
+                id = users[id]
                 confidences.append(100-confidence)
                 confidence = "  {0}%".format(round(100 - confidence))
             else:
@@ -78,5 +84,5 @@ def recognize(classifier, trainer):
 
 if __name__ == "__main__":
     args = arg_parser()
-
-    recognize(args.classifier, args.trainer)
+    users = get_users()
+    recognize(args.classifier, args.trainer, users)

@@ -3,24 +3,42 @@
 # Based on code by Marcelo Rovai -> https://github.com/Mjrovai/OpenCV-Face-Recognition
 # Program to capture face snapshots
 
-import cv2, argparse
+import cv2, argparse, json, os
 
 def arg_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-c", "--classifier", default="haarcascade_frontalface_default.xml", help="Path to the XML Cascade Classifier file")
-    parser.add_argument("-i", "--id", type=int, help="User ID that will correspond to pictures taken")
+    parser.add_argument("-u", "--user", help="Username corresponding to the pictures taken: ")
     parser.add_argument("-n", "--num", type=int, default=100, help="Number of photos to capture")
 
     args = parser.parse_args()
 
-    if args.id is None:
-        args.id = input("Please enter the user ID: ")
+    if not args.user:
+        args.user = input("Please enter the user name: ")
 
     return args
 
+def save_user(username):
+    file = "users.txt"
+    users = []
+
+    if os.path.exists(file):
+        with open(file, "r") as f:
+            for line in f.readlines():
+                users.append(line.strip())
+
+    if username in users:
+        for id, name in enumerate(users):
+            if username == name:
+                return id
+    else:
+        with open(file, "a") as f:
+            f.write(username)
+        return len(users)
+
 def capture(classifier, id, num):
-    cam = cv2.VideoCapture(1)
+    cam = cv2.VideoCapture(2)
     face_detector = cv2.CascadeClassifier(classifier)
 
     print("Please look at the camera and wait")
@@ -51,11 +69,11 @@ def capture(classifier, id, num):
             break
 
     # Do a bit of cleanup
-    print("Capture Successful! Exiting...")
+    print("\nCapture Successful! Exiting...")
     cam.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
    args = arg_parser()
-
-   capture(args.classifier, args.id, args.num) 
+   id = save_user(args.user)
+   capture(args.classifier, id, args.num) 
