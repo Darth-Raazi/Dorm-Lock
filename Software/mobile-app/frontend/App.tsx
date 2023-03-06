@@ -18,9 +18,9 @@ function App(): JSX.Element {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        userToken == null ? 
-        (<Stack.Screen name="Login" component ={LoginScreen}/>):
-        ()
+     
+        <Stack.Screen name="Login" component ={LoginScreen}/>
+      
 
         </Stack.Navigator>
     </NavigationContainer>
