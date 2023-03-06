@@ -17,6 +17,18 @@ def arg_parser():
     
     return args
 
+def returnCameraIndexes():
+    index = 0
+    arr = []
+    while index < 3:
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened() == True:
+            arr.append(index)
+        cap.release()
+        index += 1
+    cam_id = int(input(f"{len(arr)} cameras available. Enter a camera ID {arr}: "))
+    return cam_id
+
 def recognize(classifier, camera, trainer):
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     recognizer.read(trainer)
@@ -30,19 +42,6 @@ def recognize(classifier, camera, trainer):
     # Each name is associated to the ID that corresponds 
     # to its index in the array. Ex) Ozayr -> ID 0
     names = ["Ozayr"] 
-
-    # Check if the user has up to 3 cameras
-    def returnCameraIndexes():
-        index = 0
-        arr = []
-        while index < 3:
-            cap = cv2.VideoCapture(index)
-            if cap.isOpened() == True:
-                arr.append(index)
-            cap.release()
-            index += 1
-        cam_id = int(input(f"{len(arr)} cameras available. Enter a camera ID {arr}: "))
-        return cam_id
 
     # Prompt user for camera if not given
     if camera:
