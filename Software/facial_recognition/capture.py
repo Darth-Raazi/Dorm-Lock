@@ -3,20 +3,22 @@
 # Based on code by Marcelo Rovai -> https://github.com/Mjrovai/OpenCV-Face-Recognition
 # Program to capture face snapshots
 
-import cv2, argparse, os, re
+
+import cv2, argparse, json, os, re
 
 def arg_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-c", "--classifier", default="haarcascade_frontalface_default.xml", help="Path to the XML Cascade Classifier file")
-    parser.add_argument("-i", "--id", type=int, help="User ID that will correspond to pictures taken")
+    parser.add_argument("-m", "--camera", help="ID of the camera to use")
+    parser.add_argument("-u", "--user", help="Username corresponding to the pictures taken: ")
     parser.add_argument("-n", "--num", type=int, default=100, help="Number of photos to capture")
     parser.add_argument("-a", "--append", action="store_true", help="Use this flag to append to user photos instead of overwriting them")
 
     args = parser.parse_args()
 
-    if args.id is None:
-        args.id = input("Please enter the user ID: ")
+    if not args.user:
+        args.user = input("Please enter the user name: ")
 
     return args
 
@@ -34,9 +36,43 @@ def get_photo_count(append, id):
         return max(nums)
 
     return 0
+    
+def returnCameraIndexes():
+    index = 0
+    arr = []
+    while index < 3:
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened() == True:
+            arr.append(index)
+        cap.release()
+        index += 1
+    cam_id = int(input(f"{len(arr)} cameras available. Enter a camera ID {arr}: "))
+    return cam_id
+    
+def save_user(username):
+    file = "users.txt"
+    users = []
 
-def capture(classifier, id, num, next_photo):
-    cam = cv2.VideoCapture(1)
+    if os.path.exists(file):
+        with open(file, "r") as f:
+            for line in f.readlines():
+                users.append(line.strip())
+
+    if username in users:
+        return users.index(username)
+    else:
+        with open(file, "a") as f:
+            f.write(username)
+        return len(users)
+
+def capture(classifier, id, num, camera, next_photo):
+    # Prompt user for camera if not given
+    if camera:
+        selection = int(camera)
+    else:
+        selection = returnCameraIndexes()
+
+    cam = cv2.VideoCapture(selection)
     face_detector = cv2.CascadeClassifier(classifier)
 
     print("Please look at the camera and wait")
@@ -67,12 +103,13 @@ def capture(classifier, id, num, next_photo):
             break
 
     # Do a bit of cleanup
-    print("Capture Successful! Exiting...")
+    print("\nCapture Successful! Exiting...")
     cam.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     args = arg_parser()
 
-    next_photo = get_photo_count(args.append, args.id)
-    capture(args.classifier, args.id, args.num, next_photo) 
+    id = save_user(args.user)
+    next_photo = get_photo_count(args.append, id)
+    capture(args.classifier, id, args.num, args.camera, next_photo) 
