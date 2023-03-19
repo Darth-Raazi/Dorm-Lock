@@ -29,9 +29,7 @@ def save_user(username):
                 users.append(line.strip())
 
     if username in users:
-        for id, name in enumerate(users):
-            if username == name:
-                return id
+        return users.index(username)
     else:
         with open(file, "a") as f:
             f.write(username)
