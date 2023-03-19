@@ -29,19 +29,25 @@ def returnCameraIndexes():
     cam_id = int(input(f"{len(arr)} cameras available. Enter a camera ID {arr}: "))
     return cam_id
 
-def recognize(classifier, camera, trainer):
+def get_users():
+    file = "users.txt"
+    users = []
+
+    with open(file, "r") as f:
+        for line in f.readlines():
+            users.append(line.strip())
+
+    return users
+
+def recognize(classifier, camera, trainer, users):
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     recognizer.read(trainer)
     faceCascade = cv2.CascadeClassifier(classifier);
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
-    #iniciate id counter
+    #initiate id counter
     id = 0
-
-    # Each name is associated to the ID that corresponds 
-    # to its index in the array. Ex) Ozayr -> ID 0
-    names = ["Ozayr"] 
 
     # Prompt user for camera if not given
     if camera:
@@ -74,7 +80,7 @@ def recognize(classifier, camera, trainer):
 
             # Check if confidence is less them 100 ==> "0" is perfect match 
             if (confidence < 100):
-                id = names[id]
+                id = users[id]
                 confidences.append(100-confidence)
                 confidence = "  {0}%".format(round(100 - confidence))
             else:
@@ -98,5 +104,6 @@ def recognize(classifier, camera, trainer):
 
 if __name__ == "__main__":
     args = arg_parser()
-
-    recognize(args.classifier, args.camera, args.trainer)
+    
+    users = get_users()
+    recognize(args.classifier, args.camera, args.trainer, users)
