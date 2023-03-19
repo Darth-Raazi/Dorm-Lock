@@ -9,6 +9,7 @@ def arg_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-c", "--classifier", default="haarcascade_frontalface_default.xml", help="Path to the XML Cascade Classifier file")
+    parser.add_argument("-m", "--camera", help="ID of the camera to use")
     parser.add_argument("-u", "--user", help="Username corresponding to the pictures taken: ")
     parser.add_argument("-n", "--num", type=int, default=100, help="Number of photos to capture")
 
@@ -19,6 +20,18 @@ def arg_parser():
 
     return args
 
+def returnCameraIndexes():
+    index = 0
+    arr = []
+    while index < 3:
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened() == True:
+            arr.append(index)
+        cap.release()
+        index += 1
+    cam_id = int(input(f"{len(arr)} cameras available. Enter a camera ID {arr}: "))
+    return cam_id
+    
 def save_user(username):
     file = "users.txt"
     users = []
@@ -35,8 +48,14 @@ def save_user(username):
             f.write(username)
         return len(users)
 
-def capture(classifier, id, num):
-    cam = cv2.VideoCapture(2)
+def capture(classifier, id, num, camera):
+    # Prompt user for camera if not given
+    if camera:
+        selection = int(camera)
+    else:
+        selection = returnCameraIndexes()
+
+    cam = cv2.VideoCapture(selection)
     face_detector = cv2.CascadeClassifier(classifier)
 
     print("Please look at the camera and wait")
@@ -73,5 +92,6 @@ def capture(classifier, id, num):
 
 if __name__ == "__main__":
    args = arg_parser()
+   
    id = save_user(args.user)
-   capture(args.classifier, id, args.num) 
+   capture(args.classifier, id, args.num, args.camera) 

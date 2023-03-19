@@ -10,11 +10,24 @@ def arg_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-c", "--classifier", default="haarcascade_frontalface_default.xml", help="Path to the XML Cascade Classifier file")
+    parser.add_argument("-m", "--camera", help="ID of the camera to use")
     parser.add_argument("-t", "--trainer", default="trainer/trainer.yml", help="Path to folder where trainer.yaml will be created")
 
     args = parser.parse_args()
     
     return args
+
+def returnCameraIndexes():
+    index = 0
+    arr = []
+    while index < 3:
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened() == True:
+            arr.append(index)
+        cap.release()
+        index += 1
+    cam_id = int(input(f"{len(arr)} cameras available. Enter a camera ID {arr}: "))
+    return cam_id
 
 def get_users():
     file = "users.txt"
@@ -26,18 +39,24 @@ def get_users():
 
     return users
 
-def recognize(classifier, trainer, users):
+def recognize(classifier, camera, trainer, users):
     recognizer = cv2.face.LBPHFaceRecognizer_create()
     recognizer.read(trainer)
     faceCascade = cv2.CascadeClassifier(classifier);
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
-    #iniciate id counter
+    #initiate id counter
     id = 0
 
+    # Prompt user for camera if not given
+    if camera:
+        selection = int(camera)
+    else:
+        selection = returnCameraIndexes()
+
     # Initialize and start realtime video capture
-    cam = cv2.VideoCapture(2)
+    cam = cv2.VideoCapture(selection)
 
     # Define min window size to be recognized as a face
     minW = 0.1*cam.get(3)
@@ -78,11 +97,13 @@ def recognize(classifier, trainer, users):
             break
 
     print("Exiting...")
-    print(f"Average Confidence: {int(sum(confidences)/len(confidences))}")
+    if len(confidences) > 0:
+        print(f"Average Confidence: {int(sum(confidences)/len(confidences))}")
     cam.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     args = arg_parser()
+    
     users = get_users()
-    recognize(args.classifier, args.trainer, users)
+    recognize(args.classifier, args.camera, args.trainer, users)
