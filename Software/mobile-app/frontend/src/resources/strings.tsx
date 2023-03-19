@@ -2,7 +2,8 @@ const strings = {
     loginScreen:{
             "Username":"USERNAME",
             "Password": "PASSWORD",
-            "Login":"LOGIN"
+            "Login":"LOGIN",
+            "Signup":"SIGN UP"
     }
 
 
