@@ -10,5 +10,3 @@ __pycache__
 .ruby-version
 GemFile.lock
 frontend.xcworkspace
-Podfile.lock
-lib/
