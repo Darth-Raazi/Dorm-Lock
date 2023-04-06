@@ -14,6 +14,7 @@ export const LoginStyle = StyleSheet.create({
         borderRadius: 4,
         elevation: 5,
         backgroundColor: 'black',
+        width:150
     },
 
     loginButtonFont:{
@@ -24,13 +25,16 @@ export const LoginStyle = StyleSheet.create({
         color:'white'
     },
     container:{
+        borderColor:'red',
+        borderWidth:2,
         flex:1,
         alignItems:'center',
         justifyContent:'center',
+        rowGap:20
+       
     },
 
     containter2:{
-
         alignContent:'center',  
         height:250,
         rowGap:40
