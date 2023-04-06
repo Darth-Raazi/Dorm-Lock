@@ -1,7 +1,12 @@
 .DS_Store
+
+# Facial recognition
 User*.jpg
 trainer.yml
+users.txt
+__pycache__
+
+# Mobile app
 .ruby-version
 GemFile.lock
 frontend.xcworkspace
-Podfile.lock

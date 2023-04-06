@@ -58,5 +58,4 @@ def train(data, classifier, trainer):
 
 if __name__ == "__main__":
     args = arg_parser()
-
     train(args.data, args.classifier, args.trainer)
