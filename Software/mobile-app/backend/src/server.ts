@@ -3,7 +3,7 @@ import { userRouter } from  './routes/userRoutes'
 import { connectToDB } from './DB/connect'
 
 //use cmd in terminal to start mongodb server : mongod --config /opt/homebrew/etc/mongod.conf --fork
-
+//
 const app = express();
 app.use(express.json());
 

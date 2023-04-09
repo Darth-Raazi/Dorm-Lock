@@ -1,11 +1,10 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import { LoginScreen } from './src/screen/LoginScreen'
 import { SignUpScreen } from './src/screen/SignUpScreen';
 import { DashboardScreen } from './src/screen/DashboardScreen';
-import { useState, createContext  } from 'react'
+import { useState } from 'react';
 import { AuthContext } from './src/context/authContext';
-import { authUser } from './src/utilites/authenticateUser';
+import { NavigationContainer } from '@react-navigation/native';
 
 function App(): JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -36,7 +35,6 @@ function App(): JSX.Element {
     </NavigationContainer>
     </AuthContext.Provider>
   );
-} 
-
+}
 
 export default App;

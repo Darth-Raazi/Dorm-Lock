@@ -2,8 +2,7 @@ import { Document, Model } from 'mongoose';
 
 export interface IUser{
     username:string,
-    passwordHash:string
-
+    passwordHash:string,
 }
 
 export interface IUserDocument extends IUser, Document{};

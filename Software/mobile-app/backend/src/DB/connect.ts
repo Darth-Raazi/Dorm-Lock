@@ -1,7 +1,7 @@
 import { connect, Model, Document} from 'mongoose';
 import * as dotenv from 'dotenv';
 import { UserModel } from '../models/users/userModel';
-import { IUserDocument } from '../models/users/userType';
+import { IUserDocument } from '../models/users/userType'
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ export const models: {users?: Model<IUserDocument>
 
 export async function connectToDB(){
     try{
-        const database = await connect(process.env.DB_CONN_STRING as string);
+        let database = await connect(process.env.DB_CONN_STRING as string);
         console.log("Succesfully connect to DB")
 
     }catch(error){
